@@ -85,6 +85,3 @@ Contributions to this project are welcome. Please follow these steps for contrib
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
----
-
-This `README.md` file is a basic template to get you started. Depending on the specifics of your project, such as additional configuration options, more complex setup instructions, or other dependencies, you might need to add or modify sections accordingly.
