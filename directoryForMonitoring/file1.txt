@@ -1,0 +1,4 @@
+mongodump --db weverwin_hr --out C:\dataBack
+
+exampleString  exampleString    exampleString  magicStringToSearch magicStringToSearch
+http://localhost:8083/api/employee/employee-list/607e663703c53a1298ed8522?search=&reportingAuth=&departmentId=&designationId=
