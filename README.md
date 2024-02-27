@@ -1,4 +1,3 @@
-Certainly! Below is a template for a `README.md` file for your project, tailored to include details about setting up, running your Node.js application, and the MongoDB database integration for duplicate checking.
 
 ---
 
