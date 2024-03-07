@@ -1,6 +1,6 @@
 module.exports = {
     // Path to the directory to be monitored
-    directoryPath: 'E:/dirwatcher/directoryForMonitoring',
+    directoryPath: 'E:/DirectoryWatcher/directoryForMonitoring',
   
     // The magic string to count occurrences in files
     magicString: 'magicStringToSearch',
@@ -10,7 +10,7 @@ module.exports = {
   
     // Database configuration (assuming MongoDB for this example)
     db: {
-      uri: 'mongodb://localhost:27017/dirWatcherDB',
+      uri: 'mongodb://localhost:27017/weverwin_hr',
       options: {
         useNewUrlParser: true,
         useUnifiedTopology: true,

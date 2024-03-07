@@ -1,27 +1,23 @@
 const mongoose = require('mongoose');
 
 const taskResultSchema = new mongoose.Schema({
-  startTime: {
-    type: Date,
+  id: {
+    type: String,
     required: true
   },
-  endTime: {
-    type: Date,
+  action: {
+    type: String,
     required: true
   },
-  filesAdded: [{
-    type: String
-  }],
-  filesDeleted: [{
-    type: String
-  }],
-  magicString:{
+  dateTime:{
+    type: Date
+  },
+  time:{
     type: String
   },
-  magicStringOccurrences: {
-    type: Number,
-    required: true
-  }
+  date:{
+    type: Date
+  },
 }, { timestamps: true });
 
-module.exports = mongoose.model('TaskResult', taskResultSchema);
+module.exports = mongoose.model('AttDataFromMyBas', taskResultSchema);
