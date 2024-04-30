@@ -15,6 +15,12 @@ const taskResultSchema = new mongoose.Schema({
   time:{
     type: String
   },
+  empId:{
+    type: String
+  },
+  attId:{
+    type: String
+  },
   date:{
     type: Date
   },

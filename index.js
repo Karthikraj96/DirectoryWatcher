@@ -7,8 +7,8 @@ const config = require('./app/config');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect(config.db.uri)
-  .then(() => logger.info('MongoDB connected'))
+mongoose.connect(config.db.uri,config.db.options)
+  .then(() => console.log('MongoDB connected'))
   .catch(err => logger.error(err));
 
 app.use(bodyParser.json());

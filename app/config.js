@@ -1,7 +1,7 @@
 module.exports = {
     // Path to the directory to be monitored
-    directoryPath: 'E:/DirectoryWatcher/directoryForMonitoring',
-  
+    directoryPath: 'D:/FTPFiles',
+    destinationPath:'D:/ftpReaded',
     // The magic string to count occurrences in files
     magicString: 'magicStringToSearch',
   
