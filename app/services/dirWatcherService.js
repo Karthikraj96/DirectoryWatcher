@@ -4,6 +4,7 @@ const chokidar = require('chokidar');
 const TaskResult = require('../models/taskResult'); // Assuming you have this Mongoose model
 const config = require('../config');
 const csvParse = require('csv-parse');
+const axios = require('axios');
 
 let watcher = null;
 let monitoring = false;
@@ -114,6 +115,13 @@ async function insertNonDuplicates(records) {
   // Perform bulk insert for non-duplicates
   if (nonDuplicates.length > 0) {
     await TaskResult.insertMany(nonDuplicates);
+    let date = records[0].date
+    // Data to be sent in the POST request
+    const postData = {
+      "date":date
+  }
+    // Axios POST request
+    await axios.post('https://ko.woocampus.in/api/attendance/createMyBasAttendanceForTheDay', postData)
     console.log(`Inserted ${nonDuplicates.length} new records.`);
   } else {
     console.log("No new records to insert.");
@@ -121,19 +129,19 @@ async function insertNonDuplicates(records) {
 }
 async function waitForFileAccess(filePath, maxRetries = 5, delay = 100000, successDelay = 50000) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      try {
-          await fs.access(filePath);
-          // Wait an additional short period after successful access
-          await new Promise(resolve => setTimeout(resolve, successDelay));
-          return true; // The file is accessible
-      } catch (error) {
-          if (attempt === maxRetries) {
-              console.error(`Unable to access file ${filePath} after ${maxRetries} attempts.`);
-              return false;
-          }
-          // Wait before retrying
-          await new Promise(resolve => setTimeout(resolve, delay));
+    try {
+      await fs.access(filePath);
+      // Wait an additional short period after successful access
+      await new Promise(resolve => setTimeout(resolve, successDelay));
+      return true; // The file is accessible
+    } catch (error) {
+      if (attempt === maxRetries) {
+        console.error(`Unable to access file ${filePath} after ${maxRetries} attempts.`);
+        return false;
       }
+      // Wait before retrying
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
   }
 }
 
@@ -164,10 +172,10 @@ const startMonitoring = async () => {
       const path = require('path');
       // const data = await fs.readFile(filePath);
       const fileName = path.basename(filePath);
-        // Write the content to the destination file
-        let dest = path.join(config.destinationPath, fileName);
-        // await fs.writeFile(config.destinationPath, data);
-        await fs.copyFile(filePath, dest);
+      // Write the content to the destination file
+      let dest = path.join(config.destinationPath, fileName);
+      // await fs.writeFile(config.destinationPath, data);
+      await fs.copyFile(filePath, dest);
       // fs.copyFile(filePath,config.destinationPath);
       await fs.unlink(filePath);
       console.log(`Processed and deleted file: ${filePath}`);
@@ -183,7 +191,7 @@ const startMonitoring = async () => {
 
 let toAddAttendenace = async () => {
 
- }
+}
 
 
 
