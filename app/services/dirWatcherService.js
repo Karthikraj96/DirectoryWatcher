@@ -37,13 +37,20 @@ async function processCsvFile(filePath) {
         console.error(`Error processing CSV file ${filePath}:`, err);
         reject(err);
       } else {
-        const jsonRecords = records.map(([id, date, time, action]) => ({
-          id,
-          date: convertDateToISO(date),
-          dateTime: convertToISODatetime(date, time),
-          time,
-          action
-        }));
+        
+        const jsonRecords = records.map(([id, date, time, action]) => {
+          if (!date || !time || date.length !== 8) {
+            console.error(`Skipping invalid record: ${id}, ${date}, ${time}, ${action}`);
+            return null; // Skip invalid records
+          }
+          return {
+            id,
+            date: convertDateToISO(date),
+            dateTime: convertToISODatetime(date, time),
+            time,
+            action
+          };
+        }).filter(record => record !== null); 
         resolve(jsonRecords);
       }
     });
@@ -117,11 +124,34 @@ async function insertNonDuplicates(records) {
     await TaskResult.insertMany(nonDuplicates);
     let date = records[0].date
     // Data to be sent in the POST request
+  //   const postData = {
+  //     "date":date
+  // }
+  //   // Axios POST request
+  //   await axios.post('https://ko.woocampus.in/api/attendance/createMyBasAttendanceForTheDay', postData)
+  const recordsByDate = nonDuplicates.reduce((acc, record) => {
+    if (!acc[record.date]) {
+      acc[record.date] = [];
+    }
+    acc[record.date].push(record);
+    return acc;
+  }, {});
+
+  // Make POST requests serially for each unique date
+  for (const date in recordsByDate) {
     const postData = {
-      "date":date
+      date: date
+    };
+
+    // Axios POST request for each date (serial requests)
+    try {
+      await axios.post('https://ko.woocampus.in/api/attendance/createMyBasAttendanceForTheDay', postData);
+      console.log(`Successfully posted attendance for date: ${date}`);
+    } catch (error) {
+      console.error(`Failed to post attendance for date: ${date}`, error);
+      // Optionally, handle errors (e.g., retry logic, stop on error, etc.)
+    }
   }
-    // Axios POST request
-    await axios.post('https://ko.woocampus.in/api/attendance/createMyBasAttendanceForTheDay', postData)
     console.log(`Inserted ${nonDuplicates.length} new records.`);
   } else {
     console.log("No new records to insert.");
