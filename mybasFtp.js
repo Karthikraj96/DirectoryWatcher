@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dirWatcherRouter = require('./app/routes/dirWatcherRoutes');
+const dirWatcherController = require('./app/controllers/dirWatcherController');
 const logger = require('./app/utils/logger');
 const config = require('./app/config');
 const app = express();
@@ -16,4 +17,5 @@ app.use('/api', dirWatcherRouter);
 
 app.listen(PORT, () => {
     logger.info(`Server is running on port ${PORT}`);
+    dirWatcherController.startMonitoring1()
 });

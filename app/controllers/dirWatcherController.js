@@ -18,7 +18,16 @@ exports.startMonitoring = async (req, res) => {
         res.status(500).json({ message: 'Error starting monitoring task.', error: error.toString() });
     }
 };
-
+exports.startMonitoring1 = async (req, res) => {
+    try {
+        await dirWatcherService.startMonitoring();
+        // res.json({ message: 'Monitoring task started.' });
+        console.log('starting monitoring task.')
+    } catch (error) {
+        console.log('Error starting monitoring task.')
+        // res.status(500).json({ message: 'Error starting monitoring task.', error: error.toString() });
+    }
+};
 exports.stopMonitoring = async (req, res) => {
     try {
         await dirWatcherService.stopMonitoring();
